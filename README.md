@@ -1,6 +1,6 @@
 # Overview
 
-Ubuntu Desktop 20.04 supports a single ZFS boot drive out of the box. I wanted a ZFS mirror, without going through an entirely manual setup of Ubuntu as described at https://openzfs.github.io/openzfs-docs/Getting%20Started/Ubuntu/Ubuntu%2020.04%20Root%20on%20ZFS.html
+Ubuntu Desktop 20.04 supports a single ZFS boot drive out of the box. I wanted a ZFS mirror, without going through an entirely manual setup of Ubuntu as described by [OpenZFS](https://openzfs.github.io/openzfs-docs/Getting%20Started/Ubuntu/Ubuntu%2020.04%20Root%20on%20ZFS.html)
 
 This adds a mirror to an existing Ubuntu ZFS boot drive after the fact.
 
