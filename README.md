@@ -43,7 +43,7 @@ All work will be done from CLI. Open a Terminal. In the following, use copy & pa
 
 - Update Ubuntu: `sudo apt update && sudo apt dist-upgrade`
 - Find the names of your two disks: `ls -l /dev/disks/by-id`. The first disk will have four partitions, the second none.
-- Let's set variables so we can refer to them in the following
+- Let's set variables for those disk paths so we can refer to them in the following
 ```
 DISK1=/dev/disk/by-id/scsi-disk1
 DISK2=/dev/disk/by-id/scsi-disk2
