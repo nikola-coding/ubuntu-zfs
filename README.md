@@ -6,7 +6,7 @@ This adds a mirror to an existing Ubuntu ZFS boot drive after the fact.
 
 ZFS requires native encryption to be added at pool / dataset creation. These instructions are not suitable for creating an encrypted ZFS boot disk, please use the full instructions linked above for that.
 
-Note: If your use case is running docker instances, and not a full-fledged Ubuntu install, then take a look at [TrueNAS SCALE](https://www.truenas.com/truenas-scale/) to have something manage the ZFS parts for you.
+Note: If your use case is running docker instances, and not a full-fledged Ubuntu install, then take a look at [TrueNAS SCALE](https://www.truenas.com/truenas-scale/), which will manage the ZFS parts for you.
 
 # Why
 
