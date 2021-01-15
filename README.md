@@ -34,7 +34,7 @@ to AHCI, not RAID.
 ## Initial Ubuntu installation
 
 - Install from an Ubuntu Desktop 20.04 install USB. Ubuntu Server does not offer ZFS boot disk.
-- For the "Erase Disk and Install Ubuntu" option, click "Advanced Features" and choose "Experimental ZFS"
+- For the "Erase disk and install Ubuntu" option, click "Advanced Features" and choose "Experimental ZFS"
 - Continue install as normal and boot into Ubuntu
 
 ## Add second drive
