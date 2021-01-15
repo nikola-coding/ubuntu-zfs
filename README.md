@@ -18,7 +18,9 @@ ZFS has a few advantages that are good to have
 - It is a Copy-on-Write file system, which means that snapshots are fast to create and fast to roll back to (seconds), and only
 take as much space as what was written after their creation. They can be created on a per-dataset basis.
 - It has the concept of datasets, making it easy to take snapshots of specific portions of the file system, as desired.
-- It can expand the size of a vdev by replacing first one, then the other drive with a larger one
+- It can expand the size of a vdev by replacing first one, then the other drive with a larger one\
+
+ZFS functions unlike traditional file systems such as ext4. Ars Technica has a good [introduction to ZFS](https://arstechnica.com/information-technology/2020/05/zfs-101-understanding-zfs-storage-and-performance/).
 
 # How
 
