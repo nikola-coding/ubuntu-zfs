@@ -20,7 +20,7 @@ ZFS has a few advantages that are good to have
 ## Assumptions and requirements
 
 - All drives will be formatted. These instructions are not suitable for dual-boot
-- No hardware or software RAID is to be used, it keeps ZFS from detecting disk errors and correcting them. In UEFI, set controller mode
+- No hardware or software RAID is to be used, these would keep ZFS from detecting disk errors and correcting them. In UEFI, set controller mode
 to AHCI, not RAID.
 - These instructions are specific to UEFI systems and GPT. If you have an older BIOS/MBR system, please use the full instructions linked above
 
