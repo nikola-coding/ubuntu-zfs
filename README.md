@@ -8,7 +8,7 @@ ZFS requires native encryption to be added at pool / dataset creation. These ins
 
 Note: If your use case is running docker instances, and not a full-fledged Ubuntu install, then take a look at [TrueNAS SCALE](https://www.truenas.com/truenas-scale/), which will manage the ZFS parts for you.
 
-It can also be worthwhile to boot from a regular ext4 disk, whether single or mirrored, and then use a ZFS mirror pool for just `/home` and `/var`.
+It can also be worthwhile to boot from a regular ext4 disk, whether single or mirrored, and then use a ZFS mirror pool for just `/home` and `/var`. In that case these instructions aren't needed.
 
 # Why
 
