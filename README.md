@@ -8,11 +8,16 @@ ZFS requires native encryption to be added at pool / dataset creation. These ins
 
 Note: If your use case is running docker instances, and not a full-fledged Ubuntu install, then take a look at [TrueNAS SCALE](https://www.truenas.com/truenas-scale/), which will manage the ZFS parts for you.
 
+It can also be worthwhile to boot from a regular ext4 disk, whether single or mirrored, and then use a ZFS mirror pool for just `/home` and `/var`.
+
 # Why
 
 ZFS has a few advantages that are good to have
 - It uses checksums, which means that hardware failure and disk corruption will be detected and flagged during regular "scrub" operations
 - It supports mirrors, which means that even with a failed drive, data is not lost
+- It is a Copy-on-Write file system, which means that snapshots are fast to create and fast to roll back to (seconds), and only
+take as much space as what was written after their creation. They can be created on a per-dataset basis.
+- It has the concept of datasets, making it easy to take snapshots of specific portions of the file system, as desired.
 - It can expand the size of a vdev by replacing first one, then the other drive with a larger one
 
 # How
