@@ -52,22 +52,14 @@ DISK2=/dev/disk/by-id/scsi-disk2
 
 ### Mirror boot pool
 
-- Confirm that disk 1 partition 3 is the device in the **bpool** by comparing "Partition unique GUID" to the device id shown in zpool status
-```
-sudo sgdisk -i3 $DISK1
-zpool status
-```
+- Confirm that disk 1 partition 3 is the device in the **bpool** by comparing "Partition unique GUID" to the device id shown in zpool status: `sudo sgdisk -i3 $DISK1` and `zpool status`
 - Get GUID of partition 3 on disk 2: `sudo sgdisk -i3 $DISK2`
 - Add that partition to the pool: `sudo zpool attach bpool EXISTING-UID /dev/disk/by-partuuid/DISK2-PART3-GUID`, for example `sudo zpool attach bpool ac78ee0c-2d8d-3641-97dc-eb8b50abd492 /dev/disk/by-partuuid/8e1830b3-4e59-459c-9c02-a09c80428052`
 - Verify with `zpool status`. You expect to see mirror-0 now, which has been resilvered
 
 ### Mirror root pool
 
-- Confirm that disk 1 partition 4 is the device in the **rpool** by comparing "Partition unique GUID" to the device id shown in zpool status
-```
-sudo sgdisk -i4 $DISK1
-zpool status
-```
+- Confirm that disk 1 partition 4 is the device in the **rpool** by comparing "Partition unique GUID" to the device id shown in zpool status: `sudo sgdisk -i4 $DISK1` and `zpool status`
 - Get GUID of partition 4 on disk 2: `sudo sgdisk -i4 $DISK2`
 - Add that partition to the pool: `sudo zpool attach rpool EXISTING-UID /dev/disk/by-partuuid/DISK2-PART4-GUID`, for example `sudo zpool attach rpool d9844f27-a1f8-3049-9831-77b51318d9a7 /dev/disk/by-partuuid/d9844f27-a1f8-3049-9831-77b51318d9a7`
 - Verify with `zpool status`. You expect to see mirror-0 now, which either is resilvering or has been resilvered
