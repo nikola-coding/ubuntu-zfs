@@ -42,7 +42,7 @@ to AHCI, not RAID.
 All work will be done from CLI. Open a Terminal. In the following, use copy & paste extensively, it'll help avoid typos. Right-click in Terminal pastes.
 
 - Update Ubuntu: `sudo apt update && sudo apt dist-upgrade`
-- Find the names of your two disks: `ls -l /dev/disks/by-id`. The first disk will have four partitions, the second none.
+- Find the names of your two disks: `ls -l /dev/disk/by-id`. The first disk will have four partitions, the second none.
 - Let's set variables for those disk paths so we can refer to them in the following
 ```
 DISK1=/dev/disk/by-id/scsi-disk1
@@ -74,7 +74,7 @@ DISK2=/dev/disk/by-id/scsi-disk2
 ### Mirror swap
 
 - Remove existing swap: `sudo swapoff -a`
-- Remove the swap mount line in /etc/fstasb: `sudo nano /etc/fstab`, find the swap line at the end of the file and delete it, then save with Ctrl-x
+- Remove the swap mount line in /etc/fstab: `sudo nano /etc/fstab`, find the swap line at the end of the file and delete it, then save with Ctrl-x
 - Create software mirror drive for swap: `sudo mdadm --create /dev/md0 --metadata=1.2 --level=mirror --raid-devices=2 ${DISK1}-part2 ${DISK2}-part2`
 - Configure it for swap: `sudo mkswap -f /dev/md0`
 - Place it into fstab: `sudo sh -c "echo UUID=$(sudo blkid -s UUID -o value /dev/md0) none swap discard 0 0 >> /etc/fstab"`
