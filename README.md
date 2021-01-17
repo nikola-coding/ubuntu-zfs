@@ -154,7 +154,7 @@ If you like, test by rebooting: `sudo reboot`, and confirm that pools are health
 
 ## Increasing drive space
 
-Similar to replacing a failed drive, just that partition 4, the rpool partition, will be bigger. Once both drives have been replaced, rpool has the new capacity.
+Similar to replacing a failed drive, just that partition 4, the rpool partition, will be bigger. Wait for resilver after replacement, then replace the second drive. Once both drives have been replaced, rpool has the new capacity.
 
 First, find the id of the replacement drive with `ls -l /dev/disk/by-id` and create a variable for it:
 ```
@@ -174,7 +174,7 @@ The new drive may already contain ZFS or mdadm signatures. Check using `sudo wip
 
 ### Repair boot pool, root pool, swap and EFI
 
-Follow the instructions under "Replacing a failed drive", starting from "Repair boot pool"
+Follow the instructions under "Replacing a failed drive", starting from "Repair boot pool". **Wait for resilver to complete afterwards.** Then, run through these instructions again, replacing the second drive. Once resilver is done a second time, you will have the new capacity on the `rpool`.
 
 # Alternate idea
 
