@@ -113,3 +113,13 @@ first partition on both drives, e.g. /dev/sda1 and /dev/sdb1
 ## Increasing drive space
 
 - Similar to replacing a failed drive, just that partition 4, the rpool partition, will be bigger. Once both drives have been replaced, rpool has the new capacity.
+
+# Alternate idea
+
+The [ZFS Boot Menu](https://zfsbootmenu.org/) project aims to provide a cleaner, FreeBSD-ish boot experience complete with boot environments and full support for native ZFS encryption. [Community instructions for Debian](https://github.com/zbm-dev/zfsbootmenu/wiki/Debian-Buster-installation-with-ESP-on-the-zpool-disk) exist and could be adapted to Ubuntu by way of blending them with the [OpenZFS Ubuntu instructions](https://openzfs.github.io/openzfs-docs/Getting%20Started/Ubuntu/Ubuntu%2020.04%20Root%20on%20ZFS.html).
+
+If you get that up and running on Ubuntu, please share the instructions!
+
+# Youtube
+
+I did a [walkthrough](https://www.youtube.com/watch?v=uwq47T_22p8) of these instructions.
