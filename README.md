@@ -59,17 +59,17 @@ DISK2=/dev/disk/by-id/scsi-disk2
 
 ### Mirror boot pool
 
-- Confirm that disk 1 partition 3 is the device in the **bpool** by comparing "Partition unique GUID" to the device id shown in zpool status: `sudo sgdisk -i3 $DISK1` and `zpool status`
+- Confirm that disk 1 partition 3 is the device in the **bpool** by comparing "Partition unique GUID" to the device id shown in zpool status: `sudo sgdisk -i3 $DISK1` and `zpool status bpool`
 - Get GUID of partition 3 on disk 2: `sudo sgdisk -i3 $DISK2`
 - Add that partition to the pool: `sudo zpool attach bpool EXISTING-UID /dev/disk/by-partuuid/DISK2-PART3-GUID`, for example `sudo zpool attach bpool ac78ee0c-2d8d-3641-97dc-eb8b50abd492 /dev/disk/by-partuuid/8e1830b3-4e59-459c-9c02-a09c80428052`
-- Verify with `zpool status`. You expect to see mirror-0 now, which has been resilvered
+- Verify with `zpool status bpool`. You expect to see mirror-0 now, which has been resilvered
 
 ### Mirror root pool
 
-- Confirm that disk 1 partition 4 is the device in the **rpool** by comparing "Partition unique GUID" to the device id shown in zpool status: `sudo sgdisk -i4 $DISK1` and `zpool status`
+- Confirm that disk 1 partition 4 is the device in the **rpool** by comparing "Partition unique GUID" to the device id shown in zpool status: `sudo sgdisk -i4 $DISK1` and `zpool status rpool`
 - Get GUID of partition 4 on disk 2: `sudo sgdisk -i4 $DISK2`
 - Add that partition to the pool: `sudo zpool attach rpool EXISTING-UID /dev/disk/by-partuuid/DISK2-PART4-GUID`, for example `sudo zpool attach rpool d9844f27-a1f8-3049-9831-77b51318d9a7 /dev/disk/by-partuuid/d9844f27-a1f8-3049-9831-77b51318d9a7`
-- Verify with `zpool status`. You expect to see mirror-0 now, which either is resilvering or has been resilvered
+- Verify with `zpool status rpool`. You expect to see mirror-0 now, which either is resilvering or has been resilvered
 
 ### Mirror swap
 
@@ -108,11 +108,73 @@ first partition on both drives, e.g. /dev/sda1 and /dev/sdb1
 
 ## Replacing a failed drive
 
-- TBD, but in a nutshell, this will involve partitioning it, and telling zpool to replace the failed device (partition) with the new one, ditto for mdadm, and EFI needs to be taken care of.
+If a mirrored drive fails, you can replace it by following a similar method as adding a second drive in the first place.
+
+First, find the id of the replacement drive with `ls -l /dev/disk/by-id` and create a variable for it:
+```
+NEWDISK=/dev/disk/by-id/NEWDRIVEID
+```
+
+The new drive may already contain ZFS or mdadm signatures. Check using `sudo wipefs $NEWDISK`. If that output is not empty, run `sudo wipefs -a $NEWDISK`.
+
+### Create partition table on replacement disk
+
+- Copy partition table from existing disk to replacement disk: `sudo sgdisk -R$NEWDISK /dev/disk/by-id/ID-OF-EXISTING-DRIVE`
+- Change GUID of replacement disk: `sudo sgdisk -G $NEWDISK`
+
+### Repair boot pool
+
+- Get the ID of the "UNAVAIL" disk on **bpool** with `zpool status bpool`
+- Get GUID of partition 3 on the replacement disk: `sudo sgdisk -i3 $NEWDISK`
+- Replace the failed member with that partition: `sudo zpool replace bpool EXISTING-UID /dev/disk/by-partuuid/NEWDISK-PART4-GUID`, for example `sudo zpool replace bpool 6681469899058372901 /dev/disk/by-partuuid/06f5ef6d-cb69-45e8-ad3b-c69cad5c216a`
+- Verify with `zpool status bpool`. You expect to see state "ONLINE" for the pool and both devices in mirror-0.
+
+### Repair root pool
+
+- Get the ID of the "UNAVAIL" disk on **rpool** with `zpool status rpool`
+- Get GUID of partition 4 on the replacement disk: `sudo sgdisk -i4 $NEWDISK`
+- Replace the failed member with that partition: `sudo zpool replace rpool EXISTING-UID /dev/disk/by-partuuid/NEWDISK-PART4-GUID`, for example `sudo zpool replace rpool 6681469899058372901 /dev/disk/by-partuuid/06f5ef6d-cb69-45e8-ad3b-c69cad5c216a`
+- Verify with `zpool status rpool`. You expect to see state "ONLINE" for the pool and both devices in mirror-0, or state "DEGRADED" for the pool with "resilver in progress" and a "replacing-0" entry under "mirror-0"
+
+### Repair swap
+
+- Verify that the failed disk shows as "removed": `sudo mdadm -D /dev/md0`
+- Add partition 2 of the replacement disk: `sudo mdadm /dev/md0 --add ${NEWDISK}-part2`
+- And verify that you can see "spare rebuilding" or "active sync": `sudo mdadm -D /dev/md0`
+
+### Repair EFI
+
+- Create EFI file system on replacement disk: `sudo mkdosfs -F 32 -s 1 -n EFI ${NEWDISK}-part1`
+- Install GRUB to replacement disk: `sudo dpkg-reconfigure grub-efi-amd64` , keep defaults and when it comes to system partitions, use space bar to select first partition on both drives, e.g. /dev/sda1 and /dev/sdb1
+- And for good measure signed efi: `sudo dpkg-reconfigure grub-efi-amd64-signed` , this should finish without prompting you
+
+### Test
+
+If you like, test by rebooting: `sudo reboot`, and confirm that pools are healthy after reboot with `zpool status`
 
 ## Increasing drive space
 
-- Similar to replacing a failed drive, just that partition 4, the rpool partition, will be bigger. Once both drives have been replaced, rpool has the new capacity.
+Similar to replacing a failed drive, just that partition 4, the rpool partition, will be bigger. Once both drives have been replaced, rpool has the new capacity.
+
+First, find the id of the replacement drive with `ls -l /dev/disk/by-id` and create a variable for it:
+```
+NEWDISK=/dev/disk/by-id/NEWDRIVEID
+```
+
+The new drive may already contain ZFS or mdadm signatures. Check using `sudo wipefs $NEWDISK`. If that output is not empty, run `sudo wipefs -a $NEWDISK`.
+
+### Create partition table on replacement disk
+
+- Copy partition table from existing disk to replacement disk: `sudo sgdisk -R$NEWDISK /dev/disk/by-id/ID-OF-EXISTING-DRIVE`
+- Change GUID of replacement disk: `sudo sgdisk -G $NEWDISK`
+- Remove partition 4: `sudo sgdisk -d4 $NEWDISK`
+- Recreate partition 4 with maximum size: `sudo sgdisk -n4:0:0 -t4:BF00 $NEWDISK`
+- Tell the kernel to use the new partition table: `sudo partprobe`
+- Tell ZFS to use expanded space automatically: `sudo zpool set autoexpand=on rpool`
+
+### Repair boot pool, root pool, swap and EFI
+
+Follow the instructions under "Replacing a failed drive", starting from "Repair boot pool"
 
 # Alternate idea
 
