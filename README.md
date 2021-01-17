@@ -133,7 +133,7 @@ The new drive may already contain ZFS or mdadm signatures. Check using `sudo wip
 
 - Get the ID of the "UNAVAIL" disk on **rpool** with `zpool status rpool`
 - Get GUID of partition 4 on the replacement disk: `sudo sgdisk -i4 $NEWDISK`
-- Replace the failed member with that partition: `sudo zpool replace rpool EXISTING-UID /dev/disk/by-partuuid/NEWDISK-PART4-GUID`, for example `sudo zpool replace rpool 6681469899058372901 /dev/disk/by-partuuid/06f5ef6d-cb69-45e8-ad3b-c69cad5c216a`
+- Replace the failed member with that partition: `sudo zpool replace rpool EXISTING-UID /dev/disk/by-partuuid/NEWDISK-PART4-GUID`, for example `sudo zpool replace rpool 8712274632631823759 /dev/disk/by-partuuid/8c4ec74f-cd4d-4048-bfca-b4a58756563d`
 - Verify with `zpool status rpool`. You expect to see state "ONLINE" for the pool and both devices in mirror-0, or state "DEGRADED" for the pool with "resilver in progress" and a "replacing-0" entry under "mirror-0"
 
 ### Repair swap
