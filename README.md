@@ -58,7 +58,8 @@ DISK2=/dev/disk/by-id/scsi-disk2
 - Change GUID of second disk: `sudo sgdisk -G $DISK2`
 
 > Ubuntu 21.04 required a reboot at this point in my testing,
-> so that `/dev/disk/by-partuuid` was correct.
+> so that `/dev/disk/by-partuuid` was correct.If you need to do that,
+> recreate `DISK1` and `DISK2` after the reboot.
 
 ### Mirror boot pool
 
