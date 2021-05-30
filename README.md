@@ -88,7 +88,7 @@ DISK2=/dev/disk/by-id/scsi-disk2
 - Create EFI file system on second disk: `sudo mkdosfs -F 32 -s 1 -n EFI ${DISK2}-part1`
 - Remove /boot/grub from fstab: `sudo nano /etc/fstab`, find the line for /boot/grub and remove it. Leave the line for /boot/efi in place. Save with Ctrl-x.
 - Unmount /boot/grub: `sudo umount /boot/grub`
-- Verify with `df -h`, `/boot` should be mounted on `rpool/BOOT/ubuntu_UID`, `/boot/efi` on `/dev/sda1` or similar depending on device name of your first disk, and no `/boot/grub`
+- Verify with `df -h`, `/boot` should be mounted on `bpool/BOOT/ubuntu_UID`, `/boot/efi` on `/dev/sda1` or similar depending on device name of your first disk, and no `/boot/grub`
 - Remove /boot/grub: `sudo rm -rf /boot/grub`
 - And create a ZFS dataset for it: `sudo zfs create -o com.ubuntu.zsys:bootfs=no bpool/grub`
 - Refresh initrd files: `sudo update-initramfs -c -k all`
