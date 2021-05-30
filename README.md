@@ -4,7 +4,7 @@ Ubuntu Desktop 20.04 supports a single ZFS boot drive out of the box. I wanted a
 
 This adds a mirror to an existing Ubuntu ZFS boot drive after the fact.
 
-ZFS requires native encryption to be added at pool / dataset creation. Ubuntu 21.04 supports this during installation. For Ubuntu 20.04, these instructions are not suitable for creating an encrypted ZFS boot disk, please use the full instructions linked above for that. You can, however, add an encrypted dataset after the fact: You could encrypt just the portion of your file system that holds secrets.
+ZFS requires native encryption to be added at pool / dataset creation. Ubuntu 21.04 supports this during installation. Whether these instructions are suitable for mirroring such a setup has not been tested. For Ubuntu 20.04, these instructions are not suitable for creating an encrypted ZFS boot disk, please use the full instructions linked above for that. You can, however, add an encrypted dataset after the fact: You could encrypt just the portion of your file system that holds secrets.
 
 Note: If your use case is running docker instances, and not a full-fledged Ubuntu install, then take a look at [TrueNAS SCALE](https://www.truenas.com/truenas-scale/), which will manage the ZFS parts for you.
 
