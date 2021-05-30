@@ -57,6 +57,9 @@ DISK2=/dev/disk/by-id/scsi-disk2
 - Copy partition table from disk 1 to disk 2: `sudo sgdisk -R$DISK2 $DISK1`
 - Change GUID of second disk: `sudo sgdisk -G $DISK2`
 
+> Ubuntu 21.04 required a reboot at this point in my testing,
+> so that `/dev/disk/by-partuuid` was correct.
+
 ### Mirror boot pool
 
 - Confirm that disk 1 partition 3 is the device in the **bpool** by comparing "Partition unique GUID" to the device id shown in zpool status: `sudo sgdisk -i3 $DISK1` and `zpool status bpool`
